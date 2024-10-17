@@ -1,0 +1,74 @@
+1. what is maxAge key?
+// Set cookie (loign)...............
+let options = {
+  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+
+2. what is (req.headers.email = email;) => postman kotai paiteci ?
+};
+res.cookie("Token", decoded.RefreshToken, options);
+let email = decoded.email;
+req.headers.email = email;
+next();
+}
+
+3. How to refeshToken key ?.....................................
+
+import { JWT_EXPIRE_TIME, JWT_KEY } from "../config/config.js";
+import jwt from "jsonwebtoken"
+export const EncodeToken = (email) => {
+
+    let key = JWT_KEY;
+    let expire = JWT_EXPIRE_TIME;
+    let payload = { email };
+    return jwt.sign(payload, key, { expiresIn: expire });
+};
+
+
+
+export const DecodeToken = (token) => {
+    try {
+        let key = JWT_KEY;
+        let expire = JWT_EXPIRE_TIME;
+        let decoded = jwt.verify(token, key);
+
+
+        // Refresh token add
+        if (!!decoded.email === true) {
+            let RefreshToken = jwt.sign({ email: decoded.email }, key, { expiresIn: expire })
+            return { RefreshToken, email: decoded.email };
+        }
+
+    } catch (err) {
+        return null;
+    }
+};
+
+4. ..................................
+import { DecodeToken } from "../utility/tokenUtility.js";
+
+export default (req, res, next) => {
+  let token = req.cookies["Token"];
+  
+  let decoded = DecodeToken(token);
+
+  if (decoded === null) {
+    res.status(401).json({ status: "fail", message: "Unauthorized" });
+  } else {
+    // Set cookie for refresh token
+    let options = {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    };
+    res.cookie("Token", decoded.RefreshToken, options);
+    let email = decoded.email;
+    req.headers.email = email;
+    next();
+  }
+};
+
+5. what is ["eimil] ? loign
+   => let token = EncodeToken(data[0]["email"]); 
+
+6. 

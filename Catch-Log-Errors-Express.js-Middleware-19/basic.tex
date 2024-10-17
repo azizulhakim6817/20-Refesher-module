@@ -1,0 +1,11 @@
+1. What is req.originalUrl ?......................
+   => originalUrl => "/api/v1/registerdede
+//Not Found Error Handler (Middleware create)..
+const NotFoundError = (req, res, next) => {
+  let data = req.originalUrl;
+  const error = CreateError(`Your Requested {data} `, 404);
+  next(error);
+};
+
+
+2. 

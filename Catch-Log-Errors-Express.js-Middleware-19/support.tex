@@ -1,0 +1,22 @@
+
+1. what is err.stack ?.......................
+     res.status(status).json({
+       message,
+       stack: err.stack,
+     });
+
+3. what is flags ?
+//create error log file
+const logger = fs.createWriteStream("error.log", {
+  flags: "a", // If you don’t set the flag or use a different flag (like "w"), it could overwrite the file every time the error handler is invoked, which would delete previous log data.
+});
+
+const logMes = message + "||" + err.stack + "||" + new Date() + "\n";
+
+logger.write(logMes);
+
+4. what is find creatError ? ..................................................
+   module.exports = { DefaultErrorHandler, CreateError, NotFoundError };
+
+5. what is Date.now() find // /n?
+   => const logMes = message + "||" + err.stack + "||" + new Date() + "\n";
